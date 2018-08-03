@@ -1,0 +1,280 @@
+﻿<Window x:Class="EventNotifier.Notifications"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:EventNotifier.UI"
+        xmlns:local="clr-namespace:EventNotifier"
+        mc:Ignorable="d" TextOptions.TextFormattingMode="Display"
+         Name="thisWindow" Title="Notifications" SizeToContent="WidthAndHeight" MaxWidth="500" MinWidth="300" AllowsTransparency="True" WindowStyle="None"
+         Background="#00FFFFFF" WindowStartupLocation="Manual" ShowInTaskbar="False" Focusable="False" ShowActivated="False" Topmost="True">
+    <Window.Resources>
+        <Style x:Key="ShadowTextSmall" TargetType="{x:Type TextBlock}">
+            <Setter Property="UIElement.Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1"
+                                 Direction="315"
+                                 Color="Black"
+                                 Opacity="1"
+                                 BlurRadius="3"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TextBlock.FontSize" Value="11"/>
+            <Setter Property="TextBlock.Foreground" Value="#FFFFFFFF"/>
+        </Style>
+        <Style x:Key="ShadowTextTitle" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextBlock.FontSize" Value="12"/>
+            <Setter Property="TextBlock.Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+        </Style>
+        <DataTemplate x:Key="NotificationDataTemplate">
+            <Grid Name="notificationGrid"
+                     Margin="2"
+                     MinWidth="300">
+                <Grid.Triggers>
+                    <EventTrigger SourceName="notificationGrid" RoutedEvent="Grid.Loaded">
+                        <BeginStoryboard Name="timerBeginStoryBoard">
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="Timer"
+                                                 Storyboard.TargetProperty="(ui:PieSlice.PieAngle)"
+                                                 To="0"
+                                                 Duration="{Binding DisplayDuration}"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger SourceName="chkStick" RoutedEvent="CheckBox.Checked">
+                        <PauseStoryboard BeginStoryboardName="timerBeginStoryBoard"/>
+                    </EventTrigger>
+                    <EventTrigger SourceName="chkStick" RoutedEvent="CheckBox.Unchecked">
+                        <ResumeStoryboard BeginStoryboardName="timerBeginStoryBoard"/>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Border Name="backgroundRect"
+                             Background="#FF000000"
+                             BorderBrush="#FF808080"
+                             BorderThickness="2"
+                             Opacity=".7"
+                             CornerRadius="8,0,8,0">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1"
+                                         Direction="315"
+                                         Color="Black"
+                                         Opacity="1"
+                                         BlurRadius="3"/>
+                    </Border.Effect>
+                </Border>
+                <StackPanel Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="20"
+                                     Margin="3"
+                                     Source="{Binding Icon}"/>
+                        <TextBlock Margin="6"
+                                     Style="{StaticResource ShadowTextTitle}"
+                                     Text="{Binding Title}"/>
+                    </StackPanel>
+                    <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Margin="6"
+                                         TextWrapping="Wrap"
+                                         Style="{StaticResource ShadowTextSmall}"
+                                         Text="{Binding Message}"/>
+                    </ScrollViewer>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Margin="6,0,6,6"
+                                     Style="{StaticResource ShadowTextSmall}"
+                                     Text="{Binding TimeStamp}"/>
+                        <Grid Column="1"
+                                     Margin="4"
+                                     HorizontalAlignment="Right">
+                            <Ellipse Fill="#FF808080"
+                                             Stroke="#FFFFFFFF"
+                                             StrokeThickness="1"
+                                             Opacity=".2"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"/>
+                            <ui:PieSlice x:Name="Timer"
+                                             PieAngle="359"
+                                             Rotation="0"
+                                             Opacity=".5"
+                                             Radius="7"
+                                             Fill="#FFDFA142"
+                                             Margin="2"/>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                             Margin="1,4,4,1"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Top">
+                    <Button Name="btnOpenViewer"
+                                     ToolTip="Open Event Viewer"
+                                     Command="{Binding OpenEventViewer}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid Margin="2"
+                                                     Width="20"
+                                                     Height="20">
+                                    <Rectangle Name="backRect"
+                                                             RadiusX="4"
+                                                             RadiusY="4"
+                                                             Fill="#FF000000"
+                                                             Opacity=".5"/>
+                                    <Image Source="Images\EventViewer.ico" Margin="2"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFFFA500"/>
+                                    </Trigger>
+                                    <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFD3D3D3"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Name="btnCopyToClipboard"
+                                     ToolTip="Copy to Clipboard"
+                                     Command="{Binding CopyToClipboard}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid Margin="2"
+                                                     Width="20"
+                                                     Height="20">
+                                    <Rectangle Name="backRect"
+                                                             RadiusX="4"
+                                                             RadiusY="4"
+                                                             Fill="#FF000000"
+                                                             Opacity=".5"/>
+                                    <Image Source="Images\Copy.ico" Margin="2"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFFFA500"/>
+                                    </Trigger>
+                                    <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFD3D3D3"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <CheckBox Name="chkStick"
+                                     ToolTip="Pin Notification"
+                                     IsChecked="{Binding StayOpen,Mode=TwoWay}">
+                        <CheckBox.Template>
+                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                <Grid Margin="2" Width="20">
+                                    <Rectangle Name="backRect"
+                                                             RadiusX="4"
+                                                             RadiusY="4"
+                                                             Fill="#FF000000"
+                                                             Opacity=".5"/>
+                                    <Image Name="tackImage"
+                                                             Source="Images\Tack.ico"
+                                                             RenderTransformOrigin=".5,.5"
+                                                             Margin="2"
+                                                             HorizontalAlignment="Center">
+                                        <Image.RenderTransform>
+                                            <RotateTransform Angle="45"/>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFFFA500"/>
+                                    </Trigger>
+                                    <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                        <Setter TargetName="tackImage" Property="UIElement.RenderTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="-44"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter TargetName="backRect"
+                                                                 Property="UIElement.Opacity"
+                                                                 Value=".1"/>
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFFFA500"/>
+                                    </Trigger>
+                                    <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFD3D3D3"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </CheckBox.Template>
+                    </CheckBox>
+                    <CheckBox Name="chkClose" ToolTip="Close Notification">
+                        <CheckBox.Template>
+                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                <Grid Margin="2" Width="20">
+                                    <Rectangle Name="backRect"
+                                                             RadiusX="4"
+                                                             RadiusY="4"
+                                                             Fill="#FF000000"
+                                                             Opacity=".5"/>
+                                    <TextBlock Text="X"
+                                                             Style="{StaticResource ShadowTextTitle}"
+                                                             HorizontalAlignment="Center"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFFFA500"/>
+                                    </Trigger>
+                                    <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                        <Setter TargetName="backRect"
+                                                                 Property="Shape.Fill"
+                                                                 Value="#FFD3D3D3"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </CheckBox.Template>
+                    </CheckBox>
+                </StackPanel>
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger SourceName="chkClose"
+                         Property="ToggleButton.IsChecked"
+                         Value="True">
+                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger SourceName="chkStick"
+                         Property="ToggleButton.IsChecked"
+                         Value="True">
+                    <Setter TargetName="backgroundRect"
+                                 Property="Border.BorderBrush"
+                                 Value="#FFFFA500"/>
+                    <Setter TargetName="backgroundRect"
+                                 Property="UIElement.Opacity"
+                                 Value=".9"/>
+                </Trigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Name="MainGrid">
+        <Grid.LayoutTransform>
+            <ScaleTransform x:Name="gridScaleTransform"
+                     ScaleX="{Binding NotificationScale,UpdateSourceTrigger=PropertyChanged}"
+                     ScaleY="{Binding NotificationScale,UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid.LayoutTransform>
+        <ItemsControl Grid.Row="1"
+                 ItemTemplate="{StaticResource NotificationDataTemplate}"
+                 ItemsSource="{Binding ElementName=thisWindow,Path=NotificationsList,UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</Window>
