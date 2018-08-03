@@ -10,12 +10,12 @@ This makes it useful in debugging and troubleshooting any application that write
 
 ### Event Notification
 
-![Event Notification](http://3.bp.blogspot.com/-R35mmyotjAU/Tvnmko5-xJI/AAAAAAAAAAw/0AstoAoJdUU/s320/EventNotifierNotification.png "Configuration Window")
+![Event Notification](https://raw.githubusercontent.com/james-jw/EventNotifier/master/Images/EventNotifierNotification.png "Configuration Window")
 
-![Details]( "Configuration Window")
+![Details](https://raw.githubusercontent.com/james-jw/EventNotifier/master/Images/notification-details.png "Configuration Window")
 ### Configuration Window
 
-![Configuration Window](http://2.bp.blogspot.com/-wrRLQgmTfWk/TvnmkAQFXdI/AAAAAAAAAAo/GY_bg8rqZEo/s320/EventNotifierConfigWindow.png "Configuration Window")
+![Configuration Window](https://raw.githubusercontent.com/james-jw/EventNotifier/master/Images/EventNotifierConfigWindow.png "Configuration Window")
 
 Configuration Window Details:
 
@@ -28,5 +28,10 @@ Configuration Window Details:
  * Remove - Remove the selected event log from monitoring.
 
 NOTE: Look for this Tray Icon to launch the Configuration Window.
-![Tray Icon]( "Tray Icon")
+![Tray Icon](https://raw.githubusercontent.com/james-jw/EventNotifier/master/Images/tray-icon.png "Tray Icon")
 
+### Shout Out!
+
+If you like what you see here please star the repo and follow me on github or linkedIn
+
+Happy forking!!
