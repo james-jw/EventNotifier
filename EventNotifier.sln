@@ -7,10 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventNotifier", "EventNotif
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EventNotifierSetup", "EventNotifierSetup\EventNotifierSetup.vdproj", "{89FB3B1E-4BDB-4E42-8F1C-D710AA18AAFE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{183E8989-A027-48DF-9470-ECB1B55F6C54}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51BE6645-B249-42FE-BC23-4EE330B8873E}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\Users\SESA221445\Pictures\EventNotifier\notification-details.png = ..\..\Users\SESA221445\Pictures\EventNotifier\notification-details.png
-		..\..\Users\SESA221445\Pictures\EventNotifier\tray-icon.png = ..\..\Users\SESA221445\Pictures\EventNotifier\tray-icon.png
+		Images\EventNotifierConfigWindow.png = Images\EventNotifierConfigWindow.png
+		Images\EventNotifierNotification.png = Images\EventNotifierNotification.png
+		Images\notification-details.png = Images\notification-details.png
+		Images\tray-icon.png = Images\tray-icon.png
 	EndProjectSection
 EndProject
 Global
